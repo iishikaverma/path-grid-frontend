@@ -10,12 +10,17 @@ import {
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? 'http://localhost:8080'
 
-/** Single fetch wrapper: maps transport + HTTP errors to a typed ApiError. */
+const TIMEOUT_MS = 8000
+
+/** Single fetch wrapper: maps transport + HTTP errors to a typed ApiError.
+ * A timeout bounds the wait so a slow/hung backend fails gracefully instead
+ * of leaving the UI stuck on a loading spinner. */
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response
   try {
     res = await fetch(`${BASE_URL}${path}`, {
       headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
       ...init,
     })
   } catch {
