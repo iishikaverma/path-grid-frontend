@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import CampusMap from '../components/CampusMap'
 import ErrorState from '../components/ErrorState'
 import LoadingState from '../components/LoadingState'
+import LocationSelector from '../components/LocationSelector'
 import MapLegend from '../components/MapLegend'
 import { useApp } from '../context/AppContext'
 
@@ -14,6 +16,15 @@ const DSA_CARDS = [
 
 export default function Home() {
   const { graph, graphLoading, graphError, reloadGraph } = useApp()
+  const navigate = useNavigate()
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
+
+  function findRoute() {
+    if (from && to) {
+      navigate(`/find-route?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
+    }
+  }
 
   return (
     <div className="mx-auto max-w-5xl space-y-10">
@@ -24,18 +35,38 @@ export default function Home() {
         <p className="mt-3 max-w-2xl text-muted">
           Explore campus locations and discover routes using BFS.
         </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Link
-            to="/find-route"
-            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+      </section>
+
+      {/* Quick route finder */}
+      <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm sm:p-6">
+        <h2 className="mb-4 text-lg font-semibold text-ink">Route Finder</h2>
+        <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+          <LocationSelector
+            id="home-from"
+            label="From"
+            value={from}
+            options={graph?.locations ?? []}
+            onChange={setFrom}
+          />
+          <LocationSelector
+            id="home-to"
+            label="To"
+            value={to}
+            options={graph?.locations ?? []}
+            onChange={setTo}
+          />
+          <button
+            type="button"
+            onClick={findRoute}
+            disabled={!from || !to}
+            className="h-[42px] rounded-xl bg-accent px-6 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
-            Find a Route
-          </Link>
-          <Link
-            to="/visualizer"
-            className="rounded-xl border border-border bg-surface px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-surface-2"
-          >
-            Watch BFS
+            Find Route
+          </button>
+        </div>
+        <div className="mt-3">
+          <Link to="/visualizer" className="text-sm font-medium text-accent hover:underline">
+            or watch BFS explore the graph →
           </Link>
         </div>
       </section>
