@@ -65,6 +65,14 @@ html {
   color-scheme: light dark;
 }
 
+/* Consistent, visible keyboard focus for interactive elements
+   (mouse clicks don't trigger :focus-visible, so it stays clean). */
+:where(a, button, input, select, textarea, [role='option'], [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
 /* Subtle, theme-matched scrollbars for inner scroll areas. */
 .thin-scroll {
   scrollbar-width: thin;
