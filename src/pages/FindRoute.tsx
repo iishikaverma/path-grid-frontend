@@ -20,17 +20,19 @@ export default function FindRoute() {
   const [params] = useSearchParams()
   const autoRan = useRef(false)
 
-  // Prefill + auto-run once if arriving with ?from=&to= (e.g. from Home).
+  // Prefill from ?from= / ?to= (e.g. "Route here" sets just the destination),
+  // and auto-run BFS once only when both ends are provided.
   useEffect(() => {
     if (!graph || autoRan.current) return
     const qf = params.get('from')
     const qt = params.get('to')
-    if (qf && qt && graph.locations.includes(qf) && graph.locations.includes(qt)) {
-      autoRan.current = true
-      setFrom(qf)
-      setTo(qt)
-      run(qf, qt)
-    }
+    const validF = qf !== null && graph.locations.includes(qf)
+    const validT = qt !== null && graph.locations.includes(qt)
+    if (!validF && !validT) return
+    autoRan.current = true
+    if (validF) setFrom(qf!)
+    if (validT) setTo(qt!)
+    if (validF && validT) run(qf!, qt!)
   }, [graph, params, run, setFrom, setTo])
 
   const revealed = useRouteReveal(result?.path ?? [])
