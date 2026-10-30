@@ -65,6 +65,26 @@ html {
   color-scheme: light dark;
 }
 
+/* Subtle, theme-matched scrollbars for inner scroll areas. */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+.thin-scroll:hover::-webkit-scrollbar-thumb {
+  background: var(--muted);
+}
+
 body {
   margin: 0;
   background-color: var(--bg);

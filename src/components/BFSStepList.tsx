@@ -27,7 +27,7 @@ export default function BFSStepList({ steps, activeIndex, onSelect }: BFSStepLis
   }, [activeIndex])
 
   return (
-    <ol ref={listRef} className="relative max-h-64 space-y-1 overflow-y-auto pr-1">
+    <ol ref={listRef} className="thin-scroll relative max-h-64 space-y-1 overflow-y-auto pr-1">
       {steps.map((step, i) => {
         const active = i === activeIndex
         return (

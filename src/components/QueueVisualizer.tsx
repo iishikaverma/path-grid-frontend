@@ -7,7 +7,7 @@ export default function QueueVisualizer({ queue }: { queue: string[] }) {
         <span>Rear (enqueue)</span>
       </div>
 
-      <div className="flex min-h-[52px] items-center gap-2 overflow-x-auto rounded-xl border border-border bg-surface-2 p-2">
+      <div className="thin-scroll flex min-h-[52px] items-center gap-2 overflow-x-auto rounded-xl border border-border bg-surface-2 p-2">
         {queue.length === 0 ? (
           <span className="px-2 text-sm text-muted">Queue is empty</span>
         ) : (
