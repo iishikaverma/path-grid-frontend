@@ -1,14 +1,27 @@
-// Phase 2 placeholder — the full navigation shell + routes land in Phase 3.
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout'
+import { AppProvider } from './context/AppContext'
+import About from './pages/About'
+import FindRoute from './pages/FindRoute'
+import Home from './pages/Home'
+import Locations from './pages/Locations'
+import NearbyPlaces from './pages/NearbyPlaces'
+import Visualizer from './pages/Visualizer'
+
 export default function App() {
   return (
-    <main className="min-h-screen bg-bg text-ink flex items-center justify-center p-4">
-      <div className="max-w-md rounded-2xl border border-border bg-surface p-8 text-center shadow-sm">
-        <h1 className="text-2xl font-bold text-accent">PathGrid</h1>
-        <p className="mt-2 text-muted">Explore. Navigate. Find Your Path.</p>
-        <p className="mt-4 text-sm text-muted">
-          Frontend scaffold ready — Tailwind, theming, and API layer wired.
-        </p>
-      </div>
-    </main>
+    <AppProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/find-route" element={<FindRoute />} />
+          <Route path="/visualizer" element={<Visualizer />} />
+          <Route path="/nearby" element={<NearbyPlaces />} />
+          <Route path="/locations" element={<Locations />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </AppProvider>
   )
 }
