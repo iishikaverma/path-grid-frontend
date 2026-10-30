@@ -10,6 +10,20 @@ export function useRouteSearch(initialFrom = '', initialTo = '') {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Changing the selection invalidates the previous result, so clear it to
+  // avoid showing a stale route card / highlight that contradicts the new
+  // start/destination.
+  const changeFrom = useCallback((v: string) => {
+    setFrom(v)
+    setResult(null)
+    setError(null)
+  }, [])
+  const changeTo = useCallback((v: string) => {
+    setTo(v)
+    setResult(null)
+    setError(null)
+  }, [])
+
   const reset = useCallback(() => {
     setResult(null)
     setError(null)
@@ -18,11 +32,11 @@ export function useRouteSearch(initialFrom = '', initialTo = '') {
   }, [])
 
   const swap = useCallback(() => {
-    setFrom((f) => {
-      setTo(f)
-      return to
-    })
-  }, [to])
+    setFrom(to)
+    setTo(from)
+    setResult(null)
+    setError(null)
+  }, [from, to])
 
   const run = useCallback(
     async (f = from, t = to) => {
@@ -48,8 +62,8 @@ export function useRouteSearch(initialFrom = '', initialTo = '') {
   return {
     from,
     to,
-    setFrom,
-    setTo,
+    setFrom: changeFrom,
+    setTo: changeTo,
     result,
     loading,
     error,

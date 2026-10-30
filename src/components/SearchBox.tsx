@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { SearchIcon } from './icons'
 
 /** Navbar search — routes to All Locations filtered by the query. */
-export default function SearchBox() {
+export default function SearchBox({ onSubmitted }: { onSubmitted?: () => void }) {
   const [value, setValue] = useState('')
   const navigate = useNavigate()
 
@@ -11,6 +11,7 @@ export default function SearchBox() {
     e.preventDefault()
     const q = value.trim()
     navigate(q ? `/locations?q=${encodeURIComponent(q)}` : '/locations')
+    onSubmitted?.()
   }
 
   return (

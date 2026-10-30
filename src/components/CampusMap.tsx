@@ -98,13 +98,20 @@ export default function CampusMap({
         ))}
       </svg>
 
-      {/* Node popover (HTML overlay positioned over the selected node). */}
-      {selected && selPos && (
+      {/* Node popover (HTML overlay positioned over the selected node).
+          Flip its anchor near the edges so it never clips out of the map. */}
+      {selected && selPos && (() => {
+        const fracX = selPos.x / MAP_VIEWBOX.width
+        const fracY = selPos.y / MAP_VIEWBOX.height
+        const tx = fracX <= 0.22 ? '0' : fracX >= 0.78 ? '-100%' : '-50%'
+        const ty = fracY >= 0.55 ? 'calc(-100% - 14px)' : '14px'
+        return (
         <div
-          className="absolute z-10 w-56 -translate-x-1/2 rounded-xl border border-border bg-surface p-3 shadow-lg"
+          className="absolute z-10 w-56 rounded-xl border border-border bg-surface p-3 shadow-lg"
           style={{
-            left: `${(selPos.x / MAP_VIEWBOX.width) * 100}%`,
-            top: `${(selPos.y / MAP_VIEWBOX.height) * 100}%`,
+            left: `${fracX * 100}%`,
+            top: `${fracY * 100}%`,
+            transform: `translate(${tx}, ${ty})`,
           }}
           role="dialog"
           aria-label={`${selected} details`}
@@ -160,7 +167,8 @@ export default function CampusMap({
             </div>
           )}
         </div>
-      )}
+        )
+      })()}
     </div>
   )
 }

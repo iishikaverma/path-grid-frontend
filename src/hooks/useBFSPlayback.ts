@@ -57,8 +57,11 @@ export function useBFSPlayback() {
     setPlaying(false)
   }, [])
   const togglePlay = useCallback(() => {
-    setPlaying((p) => (steps.length ? !p : false))
-  }, [steps.length])
+    if (!steps.length) return
+    // Pressing play at the end restarts from the first step.
+    if (!playing && index >= lastIndex) setIndex(0)
+    setPlaying((p) => !p)
+  }, [steps.length, playing, index, lastIndex])
 
   // Auto-play loop.
   const playingRef = useRef(playing)

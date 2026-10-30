@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import SearchBox from './SearchBox'
 import { NAV_ITEMS } from './nav'
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
@@ -69,6 +70,9 @@ export function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => 
         className={`absolute left-0 top-0 flex h-full w-72 flex-col gap-6 bg-surface p-4 shadow-xl transition-transform ${open ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <Brand />
+        <div className="sm:hidden">
+          <SearchBox onSubmitted={onClose} />
+        </div>
         <NavItems onNavigate={onClose} />
       </div>
     </div>

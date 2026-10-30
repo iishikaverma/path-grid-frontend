@@ -39,13 +39,15 @@ export default function Visualizer() {
   if (!graph) return null
 
   const step = pb.current
+  // Start/dest come from the LOADED run (pb.response), not the live selectors,
+  // so changing a selector before pressing Visualize can't desync the map.
   const nodeStates: Record<string, NodeState> = {}
   if (step) {
     for (const n of step.visited) nodeStates[n] = 'visited'
     if (step.current) nodeStates[step.current] = 'current'
   }
-  if (from) nodeStates[from] = 'start'
-  if (to) nodeStates[to] = 'dest'
+  if (pb.response?.from) nodeStates[pb.response.from] = 'start'
+  if (pb.response?.to) nodeStates[pb.response.to] = 'dest'
 
   const controlBtn =
     'rounded-lg border border-border px-3 py-2 text-sm font-medium text-ink transition hover:bg-surface-2 disabled:opacity-40'
