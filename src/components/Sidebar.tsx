@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import Logo from './Logo'
 import SearchBox from './SearchBox'
 import { NAV_ITEMS } from './nav'
 
@@ -31,9 +32,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 function Brand() {
   return (
     <div className="flex items-center gap-2.5 px-2">
-      <span className="grid size-9 place-items-center rounded-xl bg-accent text-white font-bold">
-        P
-      </span>
+      <Logo size={36} />
       <div className="leading-tight">
         <p className="font-bold text-ink">PathGrid</p>
         <p className="text-xs text-muted">Find Your Path</p>
